@@ -13,7 +13,22 @@ async function processSubmission(submission: string) {
 
   // Simulate processing delay
   await new Promise((resolve) => setTimeout(resolve, 1000));
+
   console.log(`Finished processing submission for problemId ${problemId}.`);
+
+  // For pub-sub:
+
+  if (problemId === 1) {
+    client.publish(
+      "problem_done_1",
+      JSON.stringify({ problemId, status: "TLE" })
+    );
+  } else {
+    client.publish(
+      "problem_done_2",
+      JSON.stringify({ problemId, status: "Success" })
+    );
+  }
 }
 
 async function startWorker() {
